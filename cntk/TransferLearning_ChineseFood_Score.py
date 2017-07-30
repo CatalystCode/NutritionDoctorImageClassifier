@@ -1,18 +1,13 @@
-# Copyright (c) Microsoft. All rights reserved.
-
-# Licensed under the MIT license. See LICENSE.md file in the project root
-# for full license information.
-# ==============================================================================
 
 from __future__ import print_function
-import numpy as np
 import os, glob
-from cntk import load_model
-from TransferLearning import *
-from pandas_confusion import ConfusionMatrix
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 import urllib.request
+from cntk import load_model
+from TransferLearning import *
+from pandas_confusion import ConfusionMatrix
 
 #============================= set up parameters ============================
 image_height = 224 # image height
@@ -26,11 +21,11 @@ base_folder = os.path.dirname(os.path.abspath(__file__))
 score_image_folder = os.path.join(base_folder, "Output", "ChineseFood", "Score")
 if not os.path.exists(score_image_folder):
     os.mkdir(score_image_folder)
-urllib.request.urlretrieve(img_URL, os.path.join(score_image_folder, "image.jpg")) #the downloaded images are stored under "C:\\temp"
+urllib.request.urlretrieve(img_URL, os.path.join(score_image_folder, "image.jpg")) 
 
 # define base model location and characteristics
-trained_model_file = os.path.join(base_folder, "Output/ChineseFood", "TransferLearningChineseFood.model") # the trained model
-mapping_file = pd.read_pickle(os.path.join(base_folder, "Output/ChineseFood", "mapping.dat")) # mapping the label number with class name
+trained_model_file = os.path.join(base_folder, "Output/ChineseFood", "TransferLearningChineseFood.model") 
+mapping_file = pd.read_pickle(os.path.join(base_folder, "Output/ChineseFood", "mapping.dat")) 
 
 # ========================= score the new image ===============================  
 trained_model = load_model(trained_model_file) # load the trained model
