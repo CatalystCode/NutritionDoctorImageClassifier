@@ -1,33 +1,28 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jul 23 11:53:31 2017
 
-@author: tinzha
-"""
 
 from __future__ import print_function
-
 import os
 from azure.storage.blob import BlockBlobService
 from math import floor
 import random
 import shutil
 
-## CNTK download:
-## https://github.com/Microsoft/CNTK/tree/master/Examples/Image/Classification/ResNet
+# ================================ PRETRAINED MODEL ==================================
+# Download the pretrained model and store it in the PretrainedModels folder
+# CNTK download: https://github.com/Microsoft/CNTK/tree/master/Examples/Image/Classification/ResNet
 
 # ================================ CONFIGURATION =====================================
 # Azure blob account information
 ACCOUNT_NAME = "pinganhackfest2017"
 ACCOUNT_KEY = "Hi7yuNxb67pBoSqwhHlnXRHnDcLyZmuVpbmc38vzA0j5HclHVIei66jIz+p7Qa9wobC8kUzBDFyI8LCe/842Ug=="
+
 # input data in blob storage. each type of dish is stored in a separate container.
 CONTAINER_NAMES = ['chow-mein1', 'kung-pao1', 'roujiamo1','burger1','sweet-sour1']
 
-# training and testing split ratio
-training_ratio = 0.8
+TRAIN_RATIO = 0.8
 
 # ================================ DEFINE FUNCTIONS =====================================
-# check whether a directory exists. if not, create one
+# Check whether a directory exists. if not, create one
 def assure_path_exists(path):
     if not os.path.exists(path):
         os.mkdir(path)
@@ -38,7 +33,7 @@ def get_file_list_from_dir(datadir):
     data_files = list(filter(lambda file: file.endswith('.jpg'), all_files))
     return data_files            
 
-## prepare training dataset and test dataset with the split ratio
+# prepare training dataset and test dataset with the split ratio
 def get_training_and_testing_sets(split, file_list):
     split_index = floor(len(file_list) * split)
     training = file_list[:split_index]
@@ -46,7 +41,7 @@ def get_training_and_testing_sets(split, file_list):
     return training, testing
 
 # ================================== DOWNLOAD DATA ====================================
-## download data to a path: eg, chow-mein: DataSets/chow-main/*jpg
+# Download data to a path: eg, chow-mein: DataSets/chow-main/*jpg
 base_folder = os.path.dirname(os.path.abspath(__file__)) # Change me to store data elsewhere
 dataset_folder = os.path.join(base_folder,"DataSets")
 blob_service = BlockBlobService(account_name=ACCOUNT_NAME, account_key=ACCOUNT_KEY)
@@ -70,8 +65,8 @@ if not os.path.exists(dataset_folder):
                     print("something wrong happened when downloading the data %s"%blob.name)
    
 # ============================ PREPARE TRAINING AND TESTING ================================           
-## separate the datasets as training and testing then store the datasets in the following path
-## filepath format under datasets: eg, chow-mein: DataSets/ChineseFood/Train/chow-main/*jpg
+# Divide the datasets into training and testing 
+# Store the datasets in the path eg: chow-mein: "DataSets/ChineseFood/Train/chow-main/*jpg"
 
 food_dir = os.path.join(dataset_folder, "ChineseFood")
 assure_path_exists(food_dir)
@@ -86,7 +81,7 @@ for dir_data in [dir_train, dir_test]:
             image_dir = os.path.join(dataset_folder, dish_name)       
             data_files = get_file_list_from_dir(image_dir)
             random.shuffle(data_files)
-            training, testing = get_training_and_testing_sets(training_ratio,data_files)   
+            training, testing = get_training_and_testing_sets(TRAIN_RATIO,data_files)   
             
             sub_dir = os.path.join(dir_data, dish_name)          
             if not os.path.exists(sub_dir):
@@ -102,7 +97,6 @@ for dir_data in [dir_train, dir_test]:
             else:
                 print ("the dataset of %s has been created in %s" % (dish_name, dir_data))
                
-
 # ====================== Create Output Folder =============================
 output_path = os.path.join(base_folder, "Output/ChineseFood") 
 os.makedirs(output_path, exist_ok = True)

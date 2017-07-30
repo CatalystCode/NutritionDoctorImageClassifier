@@ -13,7 +13,7 @@ from pandas_confusion import ConfusionMatrix
 import pandas as pd
 from matplotlib import pyplot as plt
 
-# ================================ Load Model =====================================
+# ================================ load model =====================================
 
 # define base model location and characteristics
 base_folder = os.path.dirname(os.path.abspath(__file__))
@@ -36,7 +36,7 @@ else:
     print('Error: Unknown network definition')
     exit(1)
 
-# ======================== Set Parameters and Data Location ===========================
+# ======================== set parameters and data location ===========================
 image_height = 224
 image_width = 224
 num_channels = 3 
@@ -49,8 +49,7 @@ train_image_folder = os.path.join(base_folder,  "DataSets", "ChineseFood", "Trai
 test_image_folder = os.path.join(base_folder, "DataSets", "ChineseFood", "Test")
 file_endings = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG']
 
-# ================================ Define Functions ===================================
-
+# ================================ define functions ===================================
 def create_map_file_from_folder(root_folder, class_mapping, include_unknown=False):
     map_file_name = os.path.join(root_folder, "map.txt")
     lines = []
@@ -125,7 +124,6 @@ def train_and_eval(_base_model_file, class_mapping,  _train_image_folder, _test_
         print("Stored trained model at %s" % _new_model_file)
 
     # evaluate test images
-    #eval_test_images(trained_model, _results_file, test_map_file, image_width, image_height, max_images=-1, column_offset=0)
     total   = 0
     correct = 0
     with open(_results_file, 'w') as output_file:
@@ -154,7 +152,7 @@ def get_confusion_matrix(_results_file):
     confusion_matrix.plot()
     cm_file = _results_file.replace('.txt', '_cm.jpg')
     plt.savefig(cm_file)
-    #plt.show()
+
     print()
     print(confusion_matrix)
     print()
@@ -170,7 +168,7 @@ def get_confusion_matrix(_results_file):
 
 if __name__ == '__main__':
 
-    try_set_default_device(gpu(1))
+    try_set_default_device(gpu(1)) # change the value of number based on your GPU machine
 
     # You can use the following to inspect the base model and determine the desired node names
     if NODE_DUMP:
