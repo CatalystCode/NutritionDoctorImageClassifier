@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Sun Jul 23 11:53:31 2017
+
+@author: tinzha
+"""
 
 from __future__ import print_function
+
 import os
+from azure.storage.blob import BlockBlobService
 from math import floor
 import random
 import shutil
-from azure.storage.blob import BlockBlobService
 
-# Download pre-trained models:
-# https://github.com/Microsoft/CNTK/tree/master/Examples/Image/Classification/ResNet
+## CNTK download:
+## https://github.com/Microsoft/CNTK/tree/master/Examples/Image/Classification/ResNet
 
 # ================================ CONFIGURATION =====================================
 # Azure blob account information
 ACCOUNT_NAME = "pinganhackfest2017"
 ACCOUNT_KEY = "Hi7yuNxb67pBoSqwhHlnXRHnDcLyZmuVpbmc38vzA0j5HclHVIei66jIz+p7Qa9wobC8kUzBDFyI8LCe/842Ug=="
-
 # input data in blob storage. each type of dish is stored in a separate container.
 CONTAINER_NAMES = ['chow-mein1', 'kung-pao1', 'roujiamo1','burger1','sweet-sour1']
 
@@ -71,31 +76,31 @@ if not os.path.exists(dataset_folder):
 food_dir = os.path.join(dataset_folder, "ChineseFood")
 assure_path_exists(food_dir)
 
-train_dir = os.path.join(food_dir, 'Train')
-test_dir = os.path.join(food_dir, 'Test')
+dir_train = os.path.join(food_dir, 'Train')
+dir_test = os.path.join(food_dir, 'Test')
 
-for data_dir in [train_dir, test_dir]:
-    if not os.path.exists(data_dir):
-        os.mkdir(data_dir)  
+for dir_data in [dir_train, dir_test]:
+    if not os.path.exists(dir_data):
+        os.mkdir(dir_data)  
         for dish_name in CONTAINER_NAMES:
             image_dir = os.path.join(dataset_folder, dish_name)       
             data_files = get_file_list_from_dir(image_dir)
             random.shuffle(data_files)
             training, testing = get_training_and_testing_sets(training_ratio,data_files)   
             
-            sub_dir = os.path.join(data_dir, dish_name)          
+            sub_dir = os.path.join(dir_data, dish_name)          
             if not os.path.exists(sub_dir):
                 os.mkdir(sub_dir)     
-                if data_dir.endswith('Train'):
+                if dir_data.endswith('Train'):
                     dataset = training
-                elif data_dir.endswith('Test'):
+                elif dir_data.endswith('Test'):
                     dataset = testing            
               
                 for file_name in dataset:
                     if file_name.endswith('.jpg'):
                         shutil.copy(os.path.join(image_dir, file_name), sub_dir)
             else:
-                print ("the dataset of %s has been created in %s" % (dish_name, data_dir))
+                print ("the dataset of %s has been created in %s" % (dish_name, dir_data))
                
 
 # ====================== Create Output Folder =============================

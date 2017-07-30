@@ -5,13 +5,13 @@
 # ==============================================================================
 
 from __future__ import print_function
-import os
 import numpy as np
-import pandas as pd
-from matplotlib import pyplot as plt
-from pandas_confusion import ConfusionMatrix
+import os
 from cntk import load_model
 from TransferLearning import *
+from pandas_confusion import ConfusionMatrix
+import pandas as pd
+from matplotlib import pyplot as plt
 
 # ================================ Load Model =====================================
 
@@ -125,6 +125,7 @@ def train_and_eval(_base_model_file, class_mapping,  _train_image_folder, _test_
         print("Stored trained model at %s" % _new_model_file)
 
     # evaluate test images
+    #eval_test_images(trained_model, _results_file, test_map_file, image_width, image_height, max_images=-1, column_offset=0)
     total   = 0
     correct = 0
     with open(_results_file, 'w') as output_file:
@@ -153,7 +154,7 @@ def get_confusion_matrix(_results_file):
     confusion_matrix.plot()
     cm_file = _results_file.replace('.txt', '_cm.jpg')
     plt.savefig(cm_file)
-
+    #plt.show()
     print()
     print(confusion_matrix)
     print()
@@ -169,7 +170,7 @@ def get_confusion_matrix(_results_file):
 
 if __name__ == '__main__':
 
-    try_set_default_device(gpu(1)) # adjust the number based on your GPU machine
+    try_set_default_device(gpu(1))
 
     # You can use the following to inspect the base model and determine the desired node names
     if NODE_DUMP:
