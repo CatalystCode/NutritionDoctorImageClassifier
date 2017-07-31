@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jul 17 14:11:53 2017
-
-@author: tinzha
-"""
-
 ########################################################################
 #
 # The Inception Model v3 for TensorFlow.
