@@ -14,7 +14,7 @@ import shutil
 # ================================ CONFIGURATION =====================================
 # Azure blob account information
 ACCOUNT_NAME = "pinganhackfest2017"
-ACCOUNT_KEY = "Hi7yuNxb67pBoSqwhHlnXRHnDcLyZmuVpbmc38vzA0j5HclHVIei66jIz+p7Qa9wobC8kUzBDFyI8LCe/842Ug=="
+ACCOUNT_KEY = "abc123" # put the account key inside
 
 # input data in blob storage. each type of dish is stored in a separate container.
 CONTAINER_NAMES = ['chow-mein1', 'kung-pao1', 'roujiamo1','burger1','sweet-sour1']
